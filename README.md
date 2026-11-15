@@ -1,7 +1,5 @@
 # Bliss Recruitment iOS Challenge
 
-A native SwiftUI implementation of the Bliss Applications iOS challenge.
-
 ## Run locally
 
 Open `BlissRecruitmentChallenge.xcodeproj` in Xcode, select the `BlissRecruitmentChallenge` scheme and an iOS Simulator, then run the app. The project requires Xcode 15 or newer, targets iOS 16 or newer, and uses no third-party packages or API token. Internet access is required for GitHub API requests.
