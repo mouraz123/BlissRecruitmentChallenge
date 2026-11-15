@@ -45,43 +45,49 @@ struct EmojiListView: View {
     private let columns = Array(repeating: GridItem(.flexible(), spacing: 12), count: 3)
 
     var body: some View {
-        Group {
-            if model.visibleEmojis.isEmpty && model.isLoadingEmojis {
-                ProgressView("Loading emojis…")
-            } else if model.visibleEmojis.isEmpty {
-                EmptyStateView(title: "No emojis loaded", systemImage: "face.smiling")
-            } else {
-                ScrollView {
-                    LazyVGrid(columns: columns, spacing: 16) {
-                        ForEach(model.visibleEmojis) { emoji in
-                            Button(role: .destructive) {
-                                model.removeEmojiFromMemory(emoji)
-                            } label: {
-                                VStack(spacing: 8) {
-                                    AsyncImage(url: emoji.url) { image in
-                                        image.resizable().scaledToFit()
-                                    } placeholder: {
-                                        ProgressView()
+        GeometryReader { geometry in
+            ScrollView {
+                Group {
+                    if model.visibleEmojis.isEmpty && model.isLoadingEmojis {
+                        ProgressView("Loading emojis…")
+                    } else if model.visibleEmojis.isEmpty {
+                        EmptyStateView(title: "No emojis loaded", systemImage: "face.smiling")
+                    } else {
+                        LazyVGrid(columns: columns, spacing: 16) {
+                            ForEach(model.visibleEmojis) { emoji in
+                                Button(role: .destructive) {
+                                    model.removeEmojiFromMemory(emoji)
+                                } label: {
+                                    VStack(spacing: 8) {
+                                        AsyncImage(url: emoji.url) { image in
+                                            image.resizable().scaledToFit()
+                                        } placeholder: {
+                                            ProgressView()
+                                        }
+                                        .frame(width: 48, height: 48)
+                                        Text(emoji.name)
+                                            .font(.caption)
+                                            .lineLimit(1)
+                                            .truncationMode(.middle)
+                                        Label("Remove", systemImage: "minus.circle")
+                                            .labelStyle(.iconOnly)
                                     }
-                                    .frame(width: 48, height: 48)
-                                    Text(emoji.name)
-                                        .font(.caption)
-                                        .lineLimit(1)
-                                        .truncationMode(.middle)
-                                    Label("Remove", systemImage: "minus.circle")
-                                        .labelStyle(.iconOnly)
+                                    .frame(maxWidth: .infinity)
+                                    .padding(10)
+                                    .background(.thinMaterial, in: RoundedRectangle(cornerRadius: 12))
                                 }
-                                .frame(maxWidth: .infinity)
-                                .padding(10)
-                                .background(.thinMaterial, in: RoundedRectangle(cornerRadius: 12))
+                                .buttonStyle(.plain)
+                                .accessibilityLabel("Remove \(emoji.name) from this list")
                             }
-                            .buttonStyle(.plain)
-                            .accessibilityLabel("Remove \(emoji.name) from this list")
                         }
+                        .padding()
                     }
-                    .padding()
                 }
-                .refreshable { model.resetVisibleEmojis() }
+                .frame(maxWidth: .infinity, minHeight: geometry.size.height)
+            }
+            .refreshable {
+                await model.ensureEmojisLoaded()
+                model.resetVisibleEmojis()
             }
         }
         .navigationTitle("Emoji List")
