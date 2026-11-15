@@ -14,7 +14,9 @@ Open `BlissRecruitmentChallenge.xcodeproj` in Xcode, select the `BlissRecruitmen
 
 ## Build on a hosted Mac
 
-The included GitHub Actions workflow builds the app for the iOS Simulator on every push or pull request to `main` or `master`. To use it:
+The included [Codemagic configuration](./codemagic.yaml) builds the app for the iOS Simulator and saves the compiled `.app` as a build artifact. To use it, sign in at [Codemagic](https://codemagic.io/), connect the GitHub repository, and start the **iOS Simulator Build** workflow. Codemagic needs access to this repository to check out the source.
+
+The included GitHub Actions workflow is an alternative and builds the app for the iOS Simulator on every push or pull request to `main` or `master`, when GitHub Actions is available on the account. To use it:
 
 1. Create a **private** GitHub repository.
 2. From this project directory, initialize and push the source:
