@@ -54,28 +54,29 @@ struct EmojiListView: View {
                 ScrollView {
                     LazyVGrid(columns: columns, spacing: 16) {
                         ForEach(model.visibleEmojis) { emoji in
-                            VStack(spacing: 8) {
-                                AsyncImage(url: emoji.url) { image in
-                                    image.resizable().scaledToFit()
-                                } placeholder: {
-                                    ProgressView()
-                                }
-                                .frame(width: 48, height: 48)
-                                Text(emoji.name)
-                                    .font(.caption)
-                                    .lineLimit(1)
-                                    .truncationMode(.middle)
-                                Button(role: .destructive) {
-                                    model.removeEmojiFromMemory(emoji)
-                                } label: {
+                            Button(role: .destructive) {
+                                model.removeEmojiFromMemory(emoji)
+                            } label: {
+                                VStack(spacing: 8) {
+                                    AsyncImage(url: emoji.url) { image in
+                                        image.resizable().scaledToFit()
+                                    } placeholder: {
+                                        ProgressView()
+                                    }
+                                    .frame(width: 48, height: 48)
+                                    Text(emoji.name)
+                                        .font(.caption)
+                                        .lineLimit(1)
+                                        .truncationMode(.middle)
                                     Label("Remove", systemImage: "minus.circle")
                                         .labelStyle(.iconOnly)
                                 }
-                                .accessibilityLabel("Remove \(emoji.name) from this list")
+                                .frame(maxWidth: .infinity)
+                                .padding(10)
+                                .background(.thinMaterial, in: RoundedRectangle(cornerRadius: 12))
                             }
-                            .frame(maxWidth: .infinity)
-                            .padding(10)
-                            .background(.thinMaterial, in: RoundedRectangle(cornerRadius: 12))
+                            .buttonStyle(.plain)
+                            .accessibilityLabel("Remove \(emoji.name) from this list")
                         }
                     }
                     .padding()
