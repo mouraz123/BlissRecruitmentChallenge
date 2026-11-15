@@ -1,47 +1,24 @@
 # Bliss Recruitment iOS Challenge
 
-A native SwiftUI app implementing the ten-step Bliss iOS challenge.
+A native SwiftUI implementation of the Bliss Applications iOS challenge.
 
-## Requirements
+## Run locally
 
-- Xcode 15 or newer
-- iOS 16 or newer (simulator or device)
-- Internet access for the GitHub API
+Open `BlissRecruitmentChallenge.xcodeproj` in Xcode, select the `BlissRecruitmentChallenge` scheme and an iOS Simulator, then run the app. The project requires Xcode 15 or newer, targets iOS 16 or newer, and uses no third-party packages or API token. Internet access is required for GitHub API requests.
 
-## Run
+## Build with Codemagic
 
-Open `BlissRecruitmentChallenge.xcodeproj` in Xcode, select the `BlissRecruitmentChallenge` scheme and an iOS simulator, then run the app. No third-party packages or API token are required.
+The [`codemagic.yaml`](./codemagic.yaml) workflow builds the app for the iOS Simulator and publishes the `.app` as an artifact. Connect this GitHub repository to [Codemagic](https://codemagic.io/) and start the **iOS Simulator Build** workflow.
 
-## Build on a hosted Mac
+The simulator build is not signed for installation on a physical iPhone. Device installation requires Apple code signing and provisioning.
 
-The included [Codemagic configuration](./codemagic.yaml) builds the app for the iOS Simulator and saves the compiled `.app` as a build artifact. To use it, sign in at [Codemagic](https://codemagic.io/), connect the GitHub repository, and start the **iOS Simulator Build** workflow. Codemagic needs access to this repository to check out the source.
+## Challenge features
 
-The included GitHub Actions workflow is an alternative and builds the app for the iOS Simulator on every push or pull request to `main` or `master`, when GitHub Actions is available on the account. To use it:
-
-1. Create a **private** GitHub repository.
-2. From this project directory, initialize and push the source:
-
-   ```powershell
-   git init -b main
-   git add .
-   git commit -m "Add Bliss Recruitment iOS challenge"
-   git remote add origin https://github.com/YOUR-USERNAME/YOUR-REPOSITORY.git
-   git push -u origin main
-   ```
-
-3. Open the repository's **Actions** tab and check the **iOS Simulator Build** run. The compiled simulator `.app` is available as a workflow artifact.
-
-The workflow compiles for the simulator; installing on a physical iPhone additionally requires Apple code signing and provisioning.
-
-## Features
-
-- Fetches GitHub's emoji map once and stores it in the app's Application Support directory. Random selection and the grid reuse that cache.
-- Removes emojis from the current in-memory list only; pull to refresh restores the complete cached list.
-- Searches GitHub users, downloads and persists each avatar image with its username, and uses saved records for repeat searches.
-- Deletes saved avatars from persistent storage.
+- Fetches GitHub's emoji map once and stores it in the app's Application Support directory. Random selection and the emoji grid reuse the cached data.
+- Removes emojis from the visible list only; pull-to-refresh restores all cached emojis.
+- Searches GitHub users, downloads and persists avatar images, and uses saved records for repeat searches.
+- Lists saved avatars and deletes selected records from persistent storage.
 - Loads Apple's public repositories in pages of ten as the list is scrolled.
-- Shows request, decoding, and persistence errors in the app.
+- Presents API, decoding, and persistence errors in the app.
 
-## Implementation
-
-The app uses SwiftUI, `URLSession`, Codable models, and small JSON files for local persistence. Avatar image bytes are persisted alongside the corresponding GitHub user record. The GitHub API's unauthenticated rate limit applies.
+The app uses SwiftUI, `URLSession`, Codable models, and JSON files for local persistence. GitHub's unauthenticated API rate limit applies.
