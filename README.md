@@ -6,11 +6,7 @@ A native SwiftUI implementation of the Bliss Applications iOS challenge.
 
 Open `BlissRecruitmentChallenge.xcodeproj` in Xcode, select the `BlissRecruitmentChallenge` scheme and an iOS Simulator, then run the app. The project requires Xcode 15 or newer, targets iOS 16 or newer, and uses no third-party packages or API token. Internet access is required for GitHub API requests.
 
-## Build with Codemagic
-
-The [`codemagic.yaml`](./codemagic.yaml) workflow builds the app for the iOS Simulator and publishes the `.app` as an artifact. Connect this GitHub repository to [Codemagic](https://codemagic.io/) and start the **iOS Simulator Build** workflow.
-
-The simulator build is not signed for installation on a physical iPhone. Device installation requires Apple code signing and provisioning.
+To run on a physical iPhone, configure Apple code signing and provisioning in Xcode.
 
 ## Challenge features
 
